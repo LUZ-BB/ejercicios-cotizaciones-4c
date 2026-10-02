@@ -1,5 +1,6 @@
-package mx.edu.utez.proyecto1C.controller.exception;
+package mx.edu.utez.proyecto1C.exception;
 
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -24,6 +25,18 @@ public class ErrorHandler {
                 errores.put(err.getField(), err.getDefaultMessage());
             }
             return ResponseEntity.badRequest().body(errores);
+        }
+
+
+        @ExceptionHandler(BadRequestExeption.class)
+            public ResponseEntity<Map<String, String>> manejarBadRequest(
+                    BadRequestException ex) {
+
+                Map<String, String> errores = new LinkedHashMap<>();
+                errores.put("error", ex.getMessage());
+
+                return ResponseEntity.badRequest().body(errores);
+
         }
 
 
